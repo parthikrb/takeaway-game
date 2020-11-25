@@ -1,0 +1,72 @@
+.conversation {
+  margin: 10px;
+}
+
+.conversation__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--secondary-background);
+}
+
+.avatar--right {
+  float: right;
+}
+
+.avatar--left {
+  float: left;
+}
+
+.conversation__avatar > p {
+  color: var(--primary-dark);
+  font-size: large;
+  font-weight: bolder;
+  text-align: center;
+  line-height: 36px;
+  margin: auto;
+}
+
+.conversation__main-text {
+  display: flow-root;
+}
+
+.conversation__selection {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-dark);
+}
+
+.selection--right {
+  float: right;
+  margin-right: 10px;
+  margin-left: 0px;
+}
+
+.selection--left {
+  float: left;
+  margin-left: 10px;
+  margin-right: 0px;
+}
+
+.conversation__selection > p {
+  color: var(--secondary-dark);
+  font-size: large;
+  font-weight: bolder;
+  text-align: center;
+  margin: auto;
+  line-height: 40px;
+}
+
+.conversation__computation,
+.conversation__result {
+  height: 26px;
+  width: 220px;
+  background-color: var(--secondary-background);
+  margin-left: 45px;
+  margin-top: 5px;
+  padding: 2px;
+  padding-left: 10px;
+}
+
+

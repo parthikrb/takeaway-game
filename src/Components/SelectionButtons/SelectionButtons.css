@@ -1,0 +1,33 @@
+.action {
+  position: absolute;
+  bottom: 0;
+  width: inherit;
+  height: 50px;
+  padding-bottom: 3px;
+}
+
+.action__buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.action__button {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  background-color: var(--primary-dark);
+  font-weight: bold;
+  font-size: large;
+  color: var(--secondary-dark);
+}
+
+.enabled {
+  cursor: pointer;
+}
+
+.disabled {
+  background-color: var(--primary-light);
+  cursor: not-allowed;
+}
