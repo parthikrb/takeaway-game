@@ -1,0 +1,26 @@
+.result {
+  width: inherit;
+  height: calc(100vh-56px);
+}
+
+.result > p {
+  text-align: center;
+  font-size: xx-large;
+  font-weight: bolder;
+  line-height: calc(100vh-120px);
+}
+
+.reset-game {
+  width: inherit;
+  height: 48px;
+  background-color: var(--primary-light);
+  font-weight: bold;
+  position: fixed;
+  bottom: 0;
+  border: none;
+  outline: none;
+}
+
+.reset-game:hover {
+  background-color: var(--primary-dark);
+}

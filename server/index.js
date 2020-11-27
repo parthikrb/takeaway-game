@@ -15,14 +15,12 @@ const state = {
       name: "P1",
       turn: true,
       win: false,
-      lose: false,
     },
     {
       id: null,
       name: "P2",
       turn: false,
       win: false,
-      lose: false,
     },
   ],
   prevResult: getRandomNumber(),
@@ -47,7 +45,6 @@ const resetState = () => {
   state.players.forEach((player) => {
     player.id = null;
     player.win = false;
-    player.lose = false;
   });
   state.prevResult = getRandomNumber();
   state.conversations = [];
@@ -76,10 +73,8 @@ const makeMove = (move) => {
     const playerWon = state.players.find((player) => player.id === move.id);
     const playerLost = state.players.find((player) => player.id !== move.id);
     playerWon.win = true;
-    playerWon.lose = false;
     playerWon.turn = false;
     playerLost.win = false;
-    playerLost.lose = true;
     playerLost.turn = false;
   } else {
     switchTurn();

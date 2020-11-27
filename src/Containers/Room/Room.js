@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Room.css";
 import Conversation from "../../Components/Conversation/Conversation";
 import SelectionButtons from "../../Components/SelectionButtons/SelectionButtons";
+import Result from "../../Components/Result/Result";
 
 const Room = React.memo((props) => {
   const { socket } = props;
@@ -35,30 +36,38 @@ const Room = React.memo((props) => {
     });
   };
 
+  const resetGame = () => {
+    socket?.emit("resetGame");
+  };
+
   return (
     <div className="room">
-      <div
-        className="conversations"
-        style={{
-          height: player?.turn ? `calc(100vh - 110px)` : `calc(100vh - 68px)`,
-        }}
-      >
-        {conversations?.length === 0 ? (
-          <div className="start-game">{`${
-            player?.turn ? prevResult : "Wait for your turn"
-          }`}</div>
-        ) : (
-          conversations &&
-          conversations.map((conversation, index) => (
-            <Conversation
-              key={index}
-              sender={socket?.id === conversation.id}
-              conversation={conversation}
-            />
-          ))
-        )}
-      </div>
-      {player?.turn && (
+      {prevResult === 1 ? (
+        <Result result={player?.win} resetGame={resetGame} />
+      ) : (
+        <div
+          className="conversations"
+          style={{
+            height: player?.turn ? `calc(100vh - 110px)` : `calc(100vh - 68px)`,
+          }}
+        >
+          {conversations?.length === 0 ? (
+            <div className="start-game">{`${
+              player?.turn ? prevResult : "Wait for your turn"
+            }`}</div>
+          ) : (
+            conversations &&
+            conversations.map((conversation, index) => (
+              <Conversation
+                key={index}
+                sender={socket?.id === conversation.id}
+                conversation={conversation}
+              />
+            ))
+          )}
+        </div>
+      )}
+      {player?.turn && prevResult !== 1 && (
         <SelectionButtons checkMove={checkMove} makeMove={makeMove} />
       )}
     </div>
