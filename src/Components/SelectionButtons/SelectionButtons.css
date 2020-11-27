@@ -1,9 +1,10 @@
 .action {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: inherit;
   height: 50px;
   padding-bottom: 3px;
+  transition: all 1s linear;
 }
 
 .action__buttons {
@@ -25,9 +26,16 @@
 
 .enabled {
   cursor: pointer;
+  transition: all 1s linear;
+}
+
+.enabled:hover {
+  background-color: var(--primary-light);
+  transform: scale(1.1, 1.1);
 }
 
 .disabled {
   background-color: var(--primary-light);
   cursor: not-allowed;
+  pointer-events: none;
 }

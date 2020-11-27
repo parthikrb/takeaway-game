@@ -1,0 +1,10 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "takeaway game app",
+  "type": "module",
+  "dependencies": {
+    "express": "4.15.2",
+    "socket.io": "^2.3.0"
+  }
+}

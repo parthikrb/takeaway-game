@@ -2,27 +2,31 @@ import React from "react";
 import "./Conversation.css";
 
 const Conversation = (props) => {
-  const { recipient } = props;
+  const { sender, conversation } = props;
 
   const avatarClass = `conversation__avatar ${
-    recipient ? "avatar--left" : "avatar--right"
+    !sender ? "avatar--left" : "avatar--right"
   }`;
 
   const selectionClass = `conversation__selection ${
-    recipient ? "selection--left" : "selection--right"
+    !sender ? "selection--left" : "selection--right"
+  }`;
+
+  const conversationLinesClass = `conversation__lines ${
+    !sender ? "line--left" : "line--right"
   }`;
   return (
     <div className="conversation">
       <div className="conversation__main-text">
         <div className={avatarClass}>
-          <p>F</p>
+          <p>{conversation.playerName}</p>
         </div>
         <div className={selectionClass}>
-          <p>1</p>
+          <p>{conversation.selection}</p>
         </div>
       </div>
-      <p className="conversation__computation">5+9</p>
-      <p className="conversation__result">6</p>
+      <p className={conversationLinesClass}>{conversation.computation}</p>
+      <p className={conversationLinesClass}>{conversation.result}</p>
     </div>
   );
 };

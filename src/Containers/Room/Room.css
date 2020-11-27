@@ -3,6 +3,12 @@
 }
 
 .conversations {
-  height: calc(100vh - 120px);
   overflow: auto;
+}
+
+.start-game {
+  text-align: center;
+  font-size: xx-large;
+  font-weight: bolder;
+  line-height: calc(100vh - 120px);
 }
