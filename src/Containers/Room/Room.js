@@ -36,7 +36,7 @@ const Room = React.memo((props) => {
 
   /**
    * Emits an event to socket with the selected button value
-   * @param {Number} buttonInput
+   * @param {String} buttonInput
    */
   const makeMove = (buttonInput) => {
     socket?.emit("makeMove", {

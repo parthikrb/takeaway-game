@@ -20,7 +20,7 @@ const SelectionButtons = (props) => {
             className={`action__button ${
               checkMove(parseInt(option)) ? "enabled" : "disabled"
             }`}
-            onClick={() => makeMove(parseInt(option))}
+            onClick={() => makeMove(option)}
           >
             {option}
           </button>

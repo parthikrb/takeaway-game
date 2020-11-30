@@ -6,8 +6,12 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
+/**
+ * @return {number} random number between 2 and 1002
+ */
 const getRandomNumber = () => Math.floor(Math.random() * 1000) + 2;
 
+// Initial State
 const state = {
   players: [
     {
@@ -27,6 +31,10 @@ const state = {
   conversations: [],
 };
 
+/**
+ * function to add played to the initial state
+ * @param {number} id 
+ */
 const addPlayer = (id) => {
   for (let player of state.players) {
     if (player.id === null) {
@@ -36,6 +44,9 @@ const addPlayer = (id) => {
   }
 };
 
+/**
+ * function to reset the state to initial values
+ */
 const resetState = () => {
   state.players.forEach((player) => {
     player.win = false;
@@ -44,6 +55,10 @@ const resetState = () => {
   state.conversations = [];
 };
 
+/**
+ * function to remove the player id from the state
+ * @param {number} id 
+ */
 const removePlayer = (id) => {
   const removedPlayer = state.players.find((player) => player.id === id);
   if (!!state.conversations.length) {
@@ -54,19 +69,27 @@ const removePlayer = (id) => {
   removedPlayer.id = null;
 };
 
+/**
+ * function to switch the player's turn
+ */
 const switchTurn = () => {
   for (let player of state.players) {
     player.turn = !player.turn;
   }
 };
 
+/**
+ * function to add move's by player
+ * @param {object} move 
+ */
 const makeMove = (move) => {
-  let currentResult = Math.ceil((state.prevResult + move.value) / 3);
-  let conversation = {
+  const moveValue = parseInt(move.value);
+  const currentResult = Math.ceil((state.prevResult + moveValue) / 3);
+  const conversation = {
     id: move.id,
     playerName: state.players.find((player) => player.id === move.id).name,
     selection: move.value,
-    computation: `[${state.prevResult}+(${move.value})]/3=${currentResult}`,
+    computation: `[${state.prevResult}+(${moveValue})]/3=${currentResult}`,
     result: currentResult,
   };
   state.prevResult = currentResult;
@@ -75,11 +98,7 @@ const makeMove = (move) => {
   // To Check Win or Lose on each move
   if (currentResult === 1) {
     const playerWon = state.players.find((player) => player.id === move.id);
-    // const playerLost = state.players.find((player) => player.id !== move.id);
     playerWon.win = true;
-    // playerWon.turn = true;
-    // playerLost.win = false;
-    // playerLost.turn = false;
   } else {
     switchTurn();
   }
