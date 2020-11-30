@@ -50,8 +50,6 @@ const resetState = () => {
   state.prevResult = null;
   state.started = false;
   state.conversations = [];
-
-  console.log("Restarted Game, ", state);
 };
 
 /**
@@ -77,6 +75,10 @@ const switchTurn = () => {
   }
 };
 
+/**
+ * function to indicate the game has been started
+ * @param {object} data 
+ */
 const startGame = (data) => {
   state.prevResult = data.value;
   state.started = true;
@@ -92,7 +94,6 @@ const startGame = (data) => {
   };
 
   state.conversations.push(conversation);
-  console.log("Started Game, ", state);
 };
 
 /**
@@ -123,8 +124,6 @@ const makeMove = (move) => {
 
 io.on("connection", (socket) => {
   addPlayer(socket.id);
-  console.log("a user connected", socket.id);
-  console.log(state);
   io.emit("getState", state);
 
   io.of("/").clients((error, clients) => {
@@ -147,7 +146,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("resetGame", () => {
-    // socket.disconnect();
     resetState();
     io.emit("getState", state);
   });
