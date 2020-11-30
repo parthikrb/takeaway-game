@@ -1,6 +1,12 @@
 import React from "react";
 import "./SelectionButtons.css";
 
+/**
+ * Component to display the action button during game
+ * @param {Object} props
+ * checkMove - checks if button's value meets condition
+ * makeMove - sends the selected button values to parent component
+ */
 const SelectionButtons = (props) => {
   const { checkMove, makeMove } = props;
   const buttonOptions = ["-1", "0", "+1"];

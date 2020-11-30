@@ -1,6 +1,11 @@
 import React from "react";
 import "./Conversation.css";
 
+/**
+ * Component which displays values selection, computation and the result
+ * as a conversation
+ * @param {Object} sender_and_conversation 
+ */
 const Conversation = (props) => {
   const { sender, conversation } = props;
 

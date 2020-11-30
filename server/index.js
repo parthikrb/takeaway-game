@@ -36,18 +36,22 @@ const addPlayer = (id) => {
   }
 };
 
-const removePlayer = (id) => {
-  const removedPlayer = state.players.find((player) => player.id === id);
-  removedPlayer.id = null;
-};
-
 const resetState = () => {
   state.players.forEach((player) => {
-    player.id = null;
     player.win = false;
   });
   state.prevResult = getRandomNumber();
   state.conversations = [];
+};
+
+const removePlayer = (id) => {
+  const removedPlayer = state.players.find((player) => player.id === id);
+  if (!!state.conversations.length) {
+    removedPlayer.id = null;
+    resetState();
+    return;
+  }
+  removedPlayer.id = null;
 };
 
 const switchTurn = () => {
@@ -71,11 +75,11 @@ const makeMove = (move) => {
   // To Check Win or Lose on each move
   if (currentResult === 1) {
     const playerWon = state.players.find((player) => player.id === move.id);
-    const playerLost = state.players.find((player) => player.id !== move.id);
+    // const playerLost = state.players.find((player) => player.id !== move.id);
     playerWon.win = true;
-    playerWon.turn = false;
-    playerLost.win = false;
-    playerLost.turn = false;
+    // playerWon.turn = true;
+    // playerLost.win = false;
+    // playerLost.turn = false;
   } else {
     switchTurn();
   }
@@ -100,13 +104,13 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     removePlayer(socket.id);
-    console.log(state);
-    resetState();
     io.emit("getState", state);
   });
 
   socket.on("resetGame", () => {
-    socket.disconnect();
+    // socket.disconnect();
+    resetState();
+    io.emit("getState", state);
   });
 });
 
