@@ -1,12 +1,9 @@
 
-## Available Scripts
-
-In the project directory, you can run:
-
 ## To start the server
-### cd server and then `node .\index.js`
-Runs the server app in development mode on port 5000.\
+### `cd server` from the root directory and then `node .\index.js`
+Runs the server app in development mode on port 5000.
 
+## To start the client
 ### `npm start`
 
 Runs the client app in the development mode.\
