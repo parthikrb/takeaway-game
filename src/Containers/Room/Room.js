@@ -4,6 +4,7 @@ import Conversation from "../../Components/Conversation/Conversation";
 import SelectionButtons from "../../Components/SelectionButtons/SelectionButtons";
 import Result from "../../Components/Result/Result";
 import AutoScroll from "../../Components/AutoScroll/AutoScroll";
+import StartGame from "../../Components/StartGame/StartGame";
 
 /**
  * Component acts as a container
@@ -15,12 +16,14 @@ const Room = React.memo((props) => {
   const [player, setPlayer] = useState(null);
   const [conversations, setConversations] = useState(null);
   const [prevResult, setPrevResult] = useState(null);
+  const [gameStart, setGameStart] = useState(false);
 
   useEffect(() => {
     socket?.on("getState", (data) => {
       setPlayer(...data.players.filter((player) => player.id === socket.id));
       setConversations(data.conversations);
       setPrevResult(data.prevResult);
+      setGameStart(data.started);
     });
   }, [socket]);
 
@@ -52,13 +55,17 @@ const Room = React.memo((props) => {
     socket?.emit("resetGame");
   };
 
+  const startGame = (value) => {
+    socket?.emit("startGame", {
+      value,
+      id: socket.id,
+    });
+  };
+
   return (
     <div className="room">
       {prevResult === 1 ? (
-        <Result
-          result={player?.win}
-          resetGame={resetGame}
-        />
+        <Result result={player?.win} resetGame={resetGame} />
       ) : (
         <div
           className="conversations"
@@ -67,8 +74,12 @@ const Room = React.memo((props) => {
           }}
         >
           {conversations?.length === 0 ? (
-            <div className="start-game">{`${
-              player?.turn ? prevResult : "Wait for your turn"
+            <div className="conversation__text">{`${
+              player?.turn && prevResult !== null
+                ? prevResult
+                : player?.turn && prevResult === null
+                ? "Begin Game"
+                : "Wait for your turn"
             }`}</div>
           ) : (
             conversations &&
@@ -83,8 +94,13 @@ const Room = React.memo((props) => {
           <AutoScroll />
         </div>
       )}
-      {player?.turn && prevResult !== 1 && (
-        <SelectionButtons checkMove={checkMove} makeMove={makeMove} />
+      {!gameStart && player?.turn ? (
+        <StartGame startGame={startGame} />
+      ) : (
+        player?.turn &&
+        prevResult !== 1 && (
+          <SelectionButtons checkMove={checkMove} makeMove={makeMove} />
+        )
       )}
     </div>
   );

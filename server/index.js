@@ -6,11 +6,6 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-/**
- * @return {number} random number between 2 and 1002
- */
-const getRandomNumber = () => Math.floor(Math.random() * 1000) + 2;
-
 // Initial State
 const state = {
   players: [
@@ -27,13 +22,14 @@ const state = {
       win: false,
     },
   ],
-  prevResult: getRandomNumber(),
+  prevResult: null,
+  started: false,
   conversations: [],
 };
 
 /**
  * function to add played to the initial state
- * @param {number} id 
+ * @param {number} id
  */
 const addPlayer = (id) => {
   for (let player of state.players) {
@@ -51,13 +47,16 @@ const resetState = () => {
   state.players.forEach((player) => {
     player.win = false;
   });
-  state.prevResult = getRandomNumber();
+  state.prevResult = null;
+  state.started = false;
   state.conversations = [];
+
+  console.log("Restarted Game, ", state);
 };
 
 /**
  * function to remove the player id from the state
- * @param {number} id 
+ * @param {number} id
  */
 const removePlayer = (id) => {
   const removedPlayer = state.players.find((player) => player.id === id);
@@ -78,9 +77,27 @@ const switchTurn = () => {
   }
 };
 
+const startGame = (data) => {
+  state.prevResult = data.value;
+  state.started = true;
+  switchTurn();
+  if (data.value === 1) {
+    state.players.find((player) => player.id !== data.id).win = true;
+    return;
+  }
+  const conversation = {
+    id: data.id,
+    playerName: state.players.find((player) => player.id === data.id).name,
+    selection: data.value,
+  };
+
+  state.conversations.push(conversation);
+  console.log("Started Game, ", state);
+};
+
 /**
  * function to add move's by player
- * @param {object} move 
+ * @param {object} move
  */
 const makeMove = (move) => {
   const moveValue = parseInt(move.value);
@@ -114,10 +131,13 @@ io.on("connection", (socket) => {
     if (clients.length > 2) socket.disconnect();
   });
 
+  socket.on("startGame", (value) => {
+    startGame(value);
+    io.emit("getState", state);
+  });
+
   socket.on("makeMove", (move) => {
-    console.log(move);
     makeMove(move);
-    console.log(state);
     io.emit("getState", state);
   });
 

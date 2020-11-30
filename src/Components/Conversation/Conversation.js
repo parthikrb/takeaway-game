@@ -4,7 +4,7 @@ import "./Conversation.css";
 /**
  * Component which displays values selection, computation and the result
  * as a conversation
- * @param {Object} sender_and_conversation 
+ * @param {Object} sender_and_conversation
  */
 const Conversation = (props) => {
   const { sender, conversation } = props;
@@ -30,8 +30,12 @@ const Conversation = (props) => {
           <p>{conversation.selection}</p>
         </div>
       </div>
-      <p className={conversationLinesClass}>{conversation.computation}</p>
-      <p className={conversationLinesClass}>{conversation.result}</p>
+      {conversation.computation && (
+        <p className={conversationLinesClass}>{conversation.computation}</p>
+      )}
+      {conversation.result && (
+        <p className={conversationLinesClass}>{conversation.result}</p>
+      )}
     </div>
   );
 };
